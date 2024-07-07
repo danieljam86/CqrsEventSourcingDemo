@@ -1,0 +1,98 @@
+# CQRS e Event Sourcing com .NET
+
+Este projeto demonstra a implementação dos padrões CQRS (Command Query Responsibility Segregation) e Event Sourcing em uma aplicação .NET, utilizando MediatR para a manipulação de comandos e consultas, e um Event Store para a persistência de eventos. A aplicação simula um sistema de gerenciamento de produtos.
+
+## Estrutura do Projeto
+
+CqrsEventSourcingDemo
+├── CQRS
+│ ├── Commands
+│ │ ├── AddProductCommand.cs
+│ │ ├── CreateItemCommand.cs
+│ ├── Handlers
+│ │ ├── AddProductHandler.cs
+│ │ ├── CreateItemHandler.cs
+│ │ ├── GetAllProductsHandler.cs
+│ │ ├── GetItemHandler.cs
+│ │ ├── ProductAddedEvent.cs
+│ ├── Queries
+│ │ ├── GetAllProductsQuery.cs
+├── EventStore
+│ ├── IEventStore.cs
+│ ├── InMemoryEventStore.cs
+├── Models
+│ ├── Item.cs
+│ ├── Product.cs
+└── Program.cs
+
+
+## Requisitos
+
+- .NET 6 SDK
+- Visual Studio ou Visual Studio Code
+
+## Configuração
+
+1. Clone o repositório:
+
+    ```bash
+    git clone https://github.com/seu-usuario/cqrs-event-sourcing-dotnet.git
+    cd cqrs-event-sourcing-dotnet
+    ```
+
+2. Restaure os pacotes NuGet:
+
+    ```bash
+    dotnet restore
+    ```
+
+3. Compile o projeto:
+
+    ```bash
+    dotnet build
+    ```
+
+4. Execute o projeto:
+
+    ```bash
+    dotnet run
+    ```
+
+## Uso
+
+A aplicação inclui exemplos de uso dos padrões CQRS e Event Sourcing. Aqui estão os principais pontos de entrada:
+
+### Adicionar Produto
+
+Adiciona um novo produto ao catálogo e armazena o evento no Event Store.
+
+await mediator.Send(new AddProductCommand("Laptop", 1500.00m, 5));
+await mediator.Send(new AddProductCommand("Smartphone", 800.00m, 10));
+Listar Produtos
+Consulta todos os produtos no catálogo lendo os eventos do Event Store.
+
+
+var products = await mediator.Send(new GetAllProductsQuery());
+
+Console.WriteLine("\nProdutos no Catálogo:");
+foreach (var product in products)
+{
+    Console.WriteLine(product);
+}
+
+Resultados Esperados
+Ao executar o projeto, você verá a saída no console mostrando os eventos armazenados e a listagem dos produtos no catálogo.
+
+
+Produto adicionado: d0c5d3d2-9f3e-4f87-8d4e-94e123c5d7b3, Nome: Laptop, Preço: $1,500.00, Quantidade: 5
+Produto adicionado: d2c6e4d3-9f3e-4f87-8d4e-94e123c5d8d4, Nome: Smartphone, Preço: $800.00, Quantidade: 10
+
+Eventos no Event Store:
+CqrsEventSourcingDemo.CQRS.Handlers+ProductAddedEvent
+CqrsEventSourcingDemo.CQRS.Handlers+ProductAddedEvent
+
+Produtos no Catálogo:
+Produto: Laptop, Preço: $1,500.00, Quantidade: 5
+Produto: Smartphone, Preço: $800.00, Quantidade: 10
+Artigo no Medium
+Para mais detalhes sobre a implementação e explicações adicionais, leia o artigo completo no Medium: Link para o Artigo
